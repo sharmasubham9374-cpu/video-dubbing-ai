@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoDubber AI - English to Hindi AI Dubbing Studio (Bunty Voice)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css?v=2.1">
+</head>
+<body>
+    <!-- Background Glow Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Top Navbar -->
+        <header class="navbar">
+            <div class="brand">
+                <div class="brand-icon">🎙️</div>
+                <div class="brand-info">
+                    <h1>VideoDubber <span class="gradient-text">AI</span></h1>
+                    <p class="tagline">English Video to Hindi AI Dubbing Studio • ElevenLabs <span class="badge-voice">Bunty Voice</span></p>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button id="btnOpenPricing" class="btn btn-pass glow-btn">
+                    <span class="btn-icon">👑</span>
+                    <span id="passStatusText">👑 Unlock Pass (₹10/₹15/₹20)</span>
+                </button>
+                <div id="apiStatusBadge" class="status-pill status-warning">
+                    <span class="status-dot"></span>
+                    <span id="apiStatusText">Setup API Keys</span>
+                </div>
+                <button id="btnOpenSettings" class="btn btn-secondary">
+                    <span class="btn-icon">⚙️</span>
+                    <span>My API Keys</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Prominent Launch & Pricing Banner -->
+        <section class="pricing-banner" id="pricingHeroBanner">
+            <div class="banner-badge">🔥 Instant UPI Access</div>
+            <div class="banner-content">
+                <h2>🚀 English to Hindi AI Dubbing Studio — Pass Choose Karein</h2>
+                <p>Apna Gemini/ElevenLabs API key use karke unlimited dubbing karein. Direct UPI to <strong>subham.088@fam</strong></p>
+            </div>
+            <div class="banner-plans-preview">
+                <div class="plan-chip" onclick="document.getElementById('btnOpenPricing').click()">
+                    <span class="chip-badge">2 Days</span>
+                    <strong>₹10</strong>
+                    <small>2 Din Pass</small>
+                </div>
+                <div class="plan-chip" onclick="document.getElementById('btnOpenPricing').click()">
+                    <span class="chip-badge">7 Days</span>
+                    <strong>₹15</strong>
+                    <small>7 Din Pass</small>
+                </div>
+                <div class="plan-chip chip-popular" onclick="document.getElementById('btnOpenPricing').click()">
+                    <span class="chip-badge badge-pop">🔥 Best</span>
+                    <strong>₹20</strong>
+                    <small>28 Din (Monthly)</small>
+                </div>
+            </div>
+            <button class="btn btn-banner-action" onclick="document.getElementById('btnOpenPricing').click()">
+                <span>⚡ Pay with UPI & Unlock Now</span>
+            </button>
+        </section>
+
+        <!-- Main Studio Grid -->
+        <main class="studio-grid">
+            <!-- Left Panel: Input & Controls -->
+            <section class="studio-panel panel-left">
+                <div class="panel-header">
+                    <h2><span class="step-num">1</span> Video Upload & Voice</h2>
+                </div>
+
+                <!-- Video Dropzone -->
+                <div id="dropzone" class="dropzone">
+                    <input type="file" id="videoFileInput" accept="video/mp4,video/mkv,video/mov,video/webm" hidden>
+                    <div class="dropzone-content" id="dropzonePrompt">
+                        <div class="upload-icon">📹</div>
+                        <h3>Upload English Video</h3>
+                        <p>Drag and drop video here or <span class="browse-link">browse</span></p>
+                        <span class="supported-formats">MP4, MOV, MKV, WebM (Up to 500MB)</span>
+                    </div>
+
+                    <!-- Video Preview after selection -->
+                    <div class="selected-video-preview hidden" id="selectedVideoPreview">
+                        <video id="inputVideoPreview" controls></video>
+                        <div class="video-meta">
+                            <div class="file-details">
+                                <span class="video-name" id="previewFileName">video.mp4</span>
+                                <span class="video-specs" id="previewSpecs">0:00 • 1080p</span>
+                            </div>
+                            <button id="btnRemoveVideo" class="btn-icon-only" title="Remove video">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dubbing Options Card -->
+                <div class="options-card">
+                    <h3>Voice & Audio Settings</h3>
+
+                    <!-- Voice Selector -->
+                    <div class="form-group">
+                        <div class="label-with-action">
+                            <label for="voiceSelect">ElevenLabs Hindi Voice:</label>
+                            <button id="btnTestVoice" class="btn-text" title="Listen to sample audio">
+                                🔊 Test "Bunty" Voice
+                            </button>
+                        </div>
+                        <div class="select-wrapper">
+                            <select id="voiceSelect" class="form-control">
+                                <option value="" disabled selected>Loading voices from ElevenLabs...</option>
+                            </select>
+                        </div>
+                        <small class="helper-text" id="voiceHelperText">Default: Bunty (ElevenLabs Multilingual v2)</small>
+                    </div>
+
+                    <!-- Audio Mode Toggle -->
+                    <div class="form-group">
+                        <label>Audio Dubbing Mode:</label>
+                        <div class="toggle-group">
+                            <label class="toggle-option">
+                                <input type="radio" name="audioMode" value="replace" checked>
+                                <span class="toggle-box">
+                                    <strong>🎙️ Clean Voice Replace (0% Original Audio)</strong>
+                                    <small>Replaces original English audio track completely with crystal clear Hindi voice</small>
+                                </span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="radio" name="audioMode" value="ducking">
+                                <span class="toggle-box">
+                                    <strong>🎵 Background Sound Ducking</strong>
+                                    <small>Keeps subtle original background sound while Bunty's Hindi voice plays on top</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Volume Sliders (Expandable) -->
+                    <div class="form-group" id="volumeControlGroup">
+                        <div class="slider-row">
+                            <label for="bgVolume">Background Audio Volume: <span id="bgVolumeVal">0%</span></label>
+                            <input type="range" id="bgVolume" min="0" max="0.5" step="0.05" value="0">
+                        </div>
+                    </div>
+
+                    <!-- Start Dubbing Button -->
+                    <button id="btnStartDubbing" class="btn btn-primary btn-block btn-large" disabled>
+                        <span class="btn-icon">⚡</span>
+                        <span>Start English to Hindi Dubbing</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Panel: Processing, Transcript & Player -->
+            <section class="studio-panel panel-right">
+                <!-- Status & Progress Container -->
+                <div class="card status-card" id="statusCard">
+                    <div class="panel-header">
+                        <h2><span class="step-num">2</span> AI Dubbing Engine</h2>
+                        <span class="badge" id="jobStatusBadge">Ready</span>
+                    </div>
+
+                    <!-- Pipeline Steps Visualizer -->
+                    <div class="pipeline-stepper">
+                        <div class="step-node" id="step-extract">
+                            <div class="node-icon">🎵</div>
+                            <span class="node-title">Audio Extract</span>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-node" id="step-transcribe">
+                            <div class="node-icon">📝</div>
+                            <span class="node-title">Transcription</span>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-node" id="step-translate">
+                            <div class="node-icon">🌐</div>
+                            <span class="node-title">Hindi Translate</span>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-node" id="step-synthesize">
+                            <div class="node-icon">🗣️</div>
+                            <span class="node-title">Bunty Voice</span>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-node" id="step-merge">
+                            <div class="node-icon">🎬</div>
+                            <span class="node-title">Video Merge</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="status-message" id="statusMessage">Upload a video to begin translation and dubbing.</div>
+                </div>
+
+                <!-- Tabs: Transcript Review / Result Player -->
+                <div class="tabs-container">
+                    <div class="tabs-nav">
+                        <button class="tab-btn active" data-tab="tab-player">🎬 Output Video Studio</button>
+                        <button class="tab-btn" data-tab="tab-transcript">📜 Transcript & Hindi Script</button>
+                    </div>
+
+                    <!-- Tab 1: Output Video Studio -->
+                    <div class="tab-content active" id="tab-player">
+                        <div class="empty-state" id="playerEmptyState">
+                            <div class="empty-icon">📺</div>
+                            <h3>No Dubbed Video Yet</h3>
+                            <p>Once you click "Start Dubbing", your finished Hindi video with Bunty's voice will appear here for preview and download.</p>
+                        </div>
+
+                        <div class="player-wrapper hidden" id="playerWrapper">
+                            <div class="video-container">
+                                <video id="outputVideoPlayer" controls playsinline></video>
+                            </div>
+
+                            <div class="export-actions">
+                                <a id="btnDownloadVideo" class="btn btn-success btn-large" download>
+                                    <span class="btn-icon">⬇️</span>
+                                    <span>Download Hindi Video (.mp4)</span>
+                                </a>
+                                <a id="btnDownloadSrt" class="btn btn-secondary" download>
+                                    <span class="btn-icon">📄</span>
+                                    <span>Download Subtitles (.srt)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Transcript & Script Editor -->
+                    <div class="tab-content" id="tab-transcript">
+                        <div class="transcript-header">
+                            <p>Review timestamped English lines and their natural Hindi dubbing translations.</p>
+                        </div>
+                        <div id="transcriptSegmentsList" class="segments-list">
+                            <div class="empty-transcript">
+                                Transcript will automatically be generated during dubbing.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Pricing / UPI Payment Modal -->
+    <div class="modal-overlay hidden" id="pricingModal">
+        <div class="modal-card pricing-modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2>👑 Unlock VideoDubber Studio Pass</h2>
+                    <p class="modal-subtitle">Direct Instant UPI Payment to <strong>subham.088@fam</strong></p>
+                </div>
+                <button class="btn-close" id="btnClosePricing">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Plan Selection Cards -->
+                <div class="plans-container">
+                    <div class="plan-card" data-plan="10" data-name="2-Days Starter Pass">
+                        <div class="plan-badge">2 Days</div>
+                        <div class="plan-price">₹10</div>
+                        <div class="plan-duration">2 Din Full Access</div>
+                        <ul class="plan-features">
+                            <li>✓ Unlimited Dubbing</li>
+                            <li>✓ Bunty & Indian Voices</li>
+                            <li>✓ Instant MP4 Download</li>
+                        </ul>
+                        <button class="btn btn-plan-select">Select ₹10</button>
+                    </div>
+
+                    <div class="plan-card" data-plan="15" data-name="7-Days Creator Pass">
+                        <div class="plan-badge">7 Days</div>
+                        <div class="plan-price">₹15</div>
+                        <div class="plan-duration">7 Din Full Access</div>
+                        <ul class="plan-features">
+                            <li>✓ Unlimited Dubbing</li>
+                            <li>✓ Hindi Subtitles (.SRT)</li>
+                            <li>✓ Background Audio Mix</li>
+                        </ul>
+                        <button class="btn btn-plan-select">Select ₹15</button>
+                    </div>
+
+                    <div class="plan-card popular-plan selected" data-plan="20" data-name="28-Days Monthly VIP Pass">
+                        <div class="plan-badge badge-popular">🔥 Best Value</div>
+                        <div class="plan-price">₹20</div>
+                        <div class="plan-duration">28 Din (Full Month)</div>
+                        <ul class="plan-features">
+                            <li>✓ <strong>28 Din</strong> Unlimited Dubbing</li>
+                            <li>✓ Highest Speed Processing</li>
+                            <li>✓ All Voice & Audio Modes</li>
+                        </ul>
+                        <button class="btn btn-plan-select selected-btn">Selected (₹20)</button>
+                    </div>
+                </div>
+
+                <!-- Payment QR & UPI Section -->
+                <div class="payment-checkout-card">
+                    <div class="qr-col">
+                        <div class="qr-box">
+                            <img id="upiQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=subham.088@fam&pn=VideoDubber%20AI&am=20&cu=INR&tn=VideoDubber%20VIP%20Pass" alt="Scan UPI QR">
+                            <div class="qr-overlay-brand">₹<span id="selectedPlanAmountDisplay">20</span></div>
+                        </div>
+                        <span class="qr-scan-label">Scan with GPay, PhonePe, Paytm or BHIM</span>
+                    </div>
+
+                    <div class="upi-details-col">
+                        <div class="upi-id-pill">
+                            <span class="upi-label">UPI ID:</span>
+                            <strong class="upi-val" id="textUpiId">subham.088@fam</strong>
+                            <button id="btnCopyUpi" class="btn-copy" title="Copy UPI ID">📋 Copy</button>
+                        </div>
+
+                        <!-- Direct Mobile UPI Intent Button -->
+                        <a id="btnUpiIntentLink" href="upi://pay?pa=subham.088@fam&pn=VideoDubber%20AI&am=20&cu=INR&tn=VideoDubber%20Pass" class="btn btn-upi-pay">
+                            <span class="btn-icon">⚡</span>
+                            <span>Pay ₹<span id="intentPayAmount">20</span> with Any UPI App</span>
+                        </a>
+
+                        <!-- Verification Input -->
+                        <div class="verification-box">
+                            <label for="inputUtrNumber">Payment karne ke baad 12-Digit UTR / Reference No. ya VIP Code dalein:</label>
+                            <div class="verify-input-group">
+                                <input type="text" id="inputUtrNumber" class="form-control" placeholder="e.g. 423819283746 or VIP code">
+                                <button id="btnVerifyUtr" class="btn btn-success">
+                                    <span>Unlock Now 🔓</span>
+                                </button>
+                            </div>
+                            <div id="paymentFeedback" class="settings-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelPricing">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal (BYOK) -->
+    <div class="modal-overlay hidden" id="settingsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2>🔑 My AI API Keys (Bring Your Own Key)</h2>
+                    <p class="modal-subtitle">Aapki API Keys aapke browser me securely save rehti hain</p>
+                </div>
+                <button class="btn-close" id="btnCloseSettings">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Gemini API Key -->
+                <div class="form-group">
+                    <label for="inputGeminiKey">
+                        Google Gemini API Key:
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="external-link">Get Free Gemini Key ↗</a>
+                    </label>
+                    <input type="password" id="inputGeminiKey" class="form-control" placeholder="AIzaSy...">
+                    <small class="helper-text">High-speed speech transcription aur context-aware Hindi translation ke liye.</small>
+                </div>
+
+                <!-- ElevenLabs API Key -->
+                <div class="form-group">
+                    <label for="inputElevenLabsKey">
+                        ElevenLabs API Key:
+                        <a href="https://elevenlabs.io" target="_blank" class="external-link">Get Free ElevenLabs Key ↗</a>
+                    </label>
+                    <input type="password" id="inputElevenLabsKey" class="form-control" placeholder="xi-xxxxxxxxxxxxxxxx">
+                    <small class="helper-text">Natural Bunty Hindi AI voice synthesize karne ke liye.</small>
+                </div>
+
+                <!-- Voice ID -->
+                <div class="form-group">
+                    <label for="inputVoiceId">Bunty Voice ID (Custom or Preset):</label>
+                    <input type="text" id="inputVoiceId" class="form-control" placeholder="e.g. edge:hi-IN-MadhurNeural or ElevenLabs ID">
+                    <small class="helper-text">Agar ElevenLabs me custom "Bunty" clone voice hai toh uska ID dalein ya default rehne dein.</small>
+                </div>
+
+                <div id="settingsFeedback" class="settings-feedback"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelSettings">Cancel</button>
+                <button class="btn btn-primary" id="btnSaveSettings">Save Keys in Browser</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player for Voice Testing -->
+    <audio id="voiceTestAudio" style="display:none;"></audio>
+
+    <script src="js/app.js?v=2.1"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,16 @@
+{
+  " elevenlabs_api_key\: \\,
+ \gemini_api_key\: \\,
+ \selected_voice_id\: \\,
+ \selected_voice_name\: \Bunty\,
+ \tts_model\: \eleven_multilingual_v2\,
+ \voice_stability\: 0.5,
+ \voice_similarity_boost\: 0.8,
+ \voice_style\: 0.0,
+ \voice_speaker_boost\: true,
+ \audio_mode\: \replace\,
+ \bg_music_volume\: 0.0,
+ \voice_volume\: 1.0,
+ \burn_subtitles\: false,
+ \target_language\: \Hindi\
+}

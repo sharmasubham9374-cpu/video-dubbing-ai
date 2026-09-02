@@ -1,0 +1,7 @@
+services:
+ - type: web
+ name: videodubber-ai
+ env: docker
+ plan: free
+ region: oregon
+ autoDeploy: true

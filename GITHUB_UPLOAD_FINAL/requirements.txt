@@ -1,0 +1,8 @@
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+python-multipart>=0.0.9
+requests>=2.31.0
+google-genai>=0.1.0
+edge-tts>=6.1.10
+pydantic>=2.0.0
+aiofiles>=23.2.1
