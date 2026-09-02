@@ -17,9 +17,10 @@ RUN pip install --no-cache-dir \
     pydantic>=2.0.0 \
     aiofiles>=23.2.1
 
-COPY . .
+COPY . /app/
 
+ENV PYTHONPATH=/app
 ENV PORT=5000
 EXPOSE 5000
 
-CMD uvicorn server:app --host 0.0.0.0 --port $PORT
+CMD ["sh", "-c", "python -m uvicorn server:app --host 0.0.0.0 --port ${PORT:-5000}"]
