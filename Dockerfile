@@ -20,7 +20,8 @@ RUN pip install --no-cache-dir \
 COPY . /app/
 
 ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
 ENV PORT=5000
 EXPOSE 5000
 
-CMD ["sh", "-c", "python -m uvicorn server:app --host 0.0.0.0 --port ${PORT:-5000}"]
+CMD ["python", "server.py"]

@@ -298,4 +298,7 @@ app.mount("/", StaticFiles(directory=str(BASE_DIR / "web"), html=True), name="we
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("server:app", host="127.0.0.1", port=5000, reload=True)
+    port = int(os.environ.get("PORT", 5000))
+    host = os.environ.get("HOST", "0.0.0.0")
+    print(f"[*] Starting VideoDubber AI Server on {host}:{port} ...")
+    uvicorn.run(app, host=host, port=port)
